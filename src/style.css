@@ -1,0 +1,205 @@
+body {
+  background-color: #212121;
+}
+.mobile {
+  margin-right: auto;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #212121;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  width: 194px;
+  height: 312px;
+  margin: 10px;
+  padding: 10px;
+  background-color: #212121;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-top-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #f5f5f5;
+  text-decoration: none;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  width: 930px;
+  height: 1023px;
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-top-left-radius: 300px;
+  border-bottom-right-radius: 300px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: auto;
+  width: 25px;
+  height: 25px;
+  color: #4c00fe;
+}
+
+.modal-details {
+  display: flex;
+  align-items: center;
+}
+
+.modal-poster {
+  width: 360px;
+  height: 641px;
+  margin-top: 250px;
+}
+.modal-container {
+  flex-direction: column;
+}
+.modal-info {
+  margin-left: 20px;
+}
+
+.modal-buy-tickets {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.modal-more-info {
+  margin-top: 20px;
+  text-align: center;
+  width: 255px;
+  height: 40px;
+  border: 1px solid #4c00fe;
+  border-radius: 5px;
+}
+.more_info {
+  color: #4c00fe;
+  text-decoration: none;
+  font-family: Montserrat;
+  font-size: 16px;
+  line-height: 19.5px;
+  margin-top: 10px;
+}
+
+@media (min-width: 1280px) {
+  .card {
+    width: 194px;
+    height: 312px;
+  }
+  .card img {
+    width: 180px;
+    height: 227px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .card {
+    width: 194px;
+    height: 312px;
+  }
+  .card img {
+    width: 180px;
+    height: 227px;
+  }
+
+  .cards {
+    justify-content: space-between;
+  }
+  .modal-content {
+    width: 595px;
+    height: 831px;
+  }
+  .modal-poster {
+    width: 233px;
+    height: 416px;
+    margin-top: 160px;
+  }
+}
+
+@media (max-width: 767px) {
+  .mobile {
+    flex-direction: column;
+  }
+  .card {
+    width: 138px;
+    height: 242px;
+  }
+  .card img {
+    width: 128px;
+    height: 161px;
+  }
+
+  .cards {
+    justify-content: space-between;
+  }
+  .modal-content {
+    width: 272px;
+    height: 915px;
+  }
+
+  .modal-poster {
+    width: 102px;
+    height: 102px;
+    margin-top: 160px;
+    border-radius: 50%;
+  }
+}
+
+.location {
+  display: flex;
+  align-items: center;
+}
+
+.location i {
+  margin-right: 5px;
+}
+
+.location-text {
+  font-family: Montserrat;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19.5px;
+  text-align: center;
+}
