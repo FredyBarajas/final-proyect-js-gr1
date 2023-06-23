@@ -1,0 +1,52 @@
+.is-hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes open-modal {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: rgba(255, 255, 255, 1);
+  //width: 528px; no movil//
+  width: 272px;
+  height: 615px; //movil//
+  //height: 581px; no movil//
+  border-top-left-radius: 150px;
+  border-bottom-right-radius: 150px;
+
+  &__logo {
+    border-radius: 50%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .modal {
+    width: 595px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .modal {
+    width: 900px;
+  }
+}
