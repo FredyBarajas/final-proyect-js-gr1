@@ -3,6 +3,8 @@
  background-size: cover;
  max-width: 1200px;
  height: 446px;
+ margin-left: auto;
+ margin-right: auto;
  @media (max-width:767px) {
     background-image: url("../images/picTABLET.png");
     background-size: cover;
@@ -18,9 +20,13 @@
  }
 }
 .fondoBlack{
-    background-color: black;
+    background-color: rgb(6, 6, 6);
     max-width: 1200px;
-    height: 1502px;
+    height: 1466px;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
 }
 .logoEvento{
  background-image: url(../images/logoEventPC.png);
@@ -40,3 +46,60 @@
     
  }
 }
+
+.item{
+position: absolute;
+@media (max-width:767px) {
+    display: none;
+}
+
+}
+.D1{
+top: 100px;
+right: 100px;
+@media (max-width:767px) {
+    display:ruby;
+}
+}
+.D2{
+bottom: 0;
+right: 100px;
+}
+.D3{
+top: 500px;
+left: 35px;
+}
+.D4{
+bottom: 0;
+left: 100px;
+}
+.D5{
+top: 0px;
+left: 100px;
+}
+.D6{
+top: 0px;
+right: 100px;
+}
+.D7{
+bottom: 0px;
+right: 100px;
+}
+.D8{
+bottom: 0px;
+left: 100px;
+}
+.D9{
+    bottom: 500px;
+    right: 35px;
+}
+.D10{
+top: 460px;
+left: 0px;
+}
+.D11{
+top: 1230px;
+right:0;
+}
+
+
