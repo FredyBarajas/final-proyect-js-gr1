@@ -1,13 +1,13 @@
 const API_KEY = 'DCtz5bLd3cx4DdWQdcctzejbLGWIabei';
 const cardsContainer = document.querySelector('.cards');
-const paginationContainer = document.querySelector('.pagination');
 const modal = document.getElementById('modal');
 const modalPoster = document.querySelector('.modal-poster');
 const modalInfo = document.querySelector('.modal-info');
 const modalBuyTickets = document.querySelector('.modal-buy-tickets');
+const paginationContainer = document.querySelector('.pagination');
 
 // Configuración de la paginación
-const eventosPorPagina = 20;
+const eventosPorPagina = 16;
 let paginaActual = 1;
 
 // Función para obtener eventos de la API de Ticketmaster
@@ -30,9 +30,11 @@ async function obtenerEventos() {
 function generarTarjetas(eventos) {
   cardsContainer.innerHTML = '';
 
+  //animar tarjetas al dar enter
+
   eventos.forEach(evento => {
     const card = document.createElement('div');
-    card.classList.add('card');
+    card.classList.add('card', 'animate-enter');
 
     const poster = document.createElement('img');
     poster.src = evento.images[0].url;
@@ -44,10 +46,13 @@ function generarTarjetas(eventos) {
     nombre.style.color = '#DC56C5';
     nombre.style.fontFamily = 'Montserrat';
     nombre.style.fontWeight = '700';
-    nombre.style.fontSize = '16px';
     nombre.style.lineHeight = '19.5px';
     nombre.style.textAlign = 'center';
-
+    if (window.innerWidth <= 768) {
+      nombre.style.fontSize = '14px';
+    } else {
+      nombre.style.fontSize = '16px';
+    }
     const fecha = document.createElement('div');
     fecha.textContent = evento.dates.start.localDate;
     card.appendChild(fecha);
@@ -94,6 +99,17 @@ function generarPaginacion(eventos) {
     enlace.addEventListener('click', () => {
       paginaActual = i;
       obtenerEventos();
+      window.scrollTo(0, 0);
+
+      // Reiniciar la animación y la transición después de un pequeño retraso
+      setTimeout(() => {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+          card.classList.remove('animate-enter');
+          void card.offsetWidth; // Reiniciar la animación
+          card.classList.add('animate-enter');
+        });
+      }, 500);
     });
 
     paginationContainer.appendChild(enlace);
@@ -120,36 +136,27 @@ function mostrarModal(evento) {
   closeButton.addEventListener('click', () => {
     modal.style.display = 'none';
   });
+
+  //funcion para cerrar el modal al dar click en la parte oscura de la pagina
+
+  modal.addEventListener('click', event => {
+    if (event.target === modal) {
+      modal.style.display = 'none';
+    }
+  });
+
+  //codigo para solicitar mas informacion del artista
+
+  const moreInfoButton = document.querySelector('.more_info');
+  moreInfoButton.addEventListener('click', () => {
+    const authorUrl = evento._embedded.attractions[0].url;
+    window.location.href = authorUrl;
+  });
 }
 
 // Iniciar la obtención de eventos al cargar la página
 obtenerEventos();
 
-// Función para generar los enlaces de paginación
-function generarPaginacion(eventos) {
-  paginationContainer.innerHTML = '';
-
-  const totalPaginas = Math.ceil(eventos.length / eventosPorPagina);
-
-  for (let i = 1; i <= totalPaginas; i++) {
-    const enlace = document.createElement('a');
-    enlace.href = '#';
-    enlace.textContent = i;
-
-    if (i === paginaActual) {
-      enlace.classList.add('active');
-    }
-
-    enlace.addEventListener('click', event => {
-      event.preventDefault();
-      paginaActual = i;
-      obtenerEventos();
-      window.scrollTo(0, 0);
-    });
-
-    paginationContainer.appendChild(enlace);
-  }
-}
 const lugar = document.createElement('div');
 lugar.classList.add('location');
 
@@ -163,3 +170,11 @@ lugarTexto.textContent = evento._embedded.venues[0].name;
 lugar.appendChild(lugarTexto);
 
 card.appendChild(lugar);
+
+// Dentro de la función mostrarModal(evento) donde se encuentra el botón "More from this author"
+const moreInfoButton = document.querySelector('.more_info');
+
+moreInfoButton.addEventListener('click', () => {
+  const authorUrl = evento._embedded.attractions[0].url;
+  window.location.href = authorUrl;
+});
