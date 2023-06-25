@@ -1,3 +1,7 @@
+body{
+  background-color: black;
+}
+
 .mobile {
   margin-right: auto;
 }
@@ -13,6 +17,7 @@
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  border: 1px solid orange;
 }
 
 .cards {
