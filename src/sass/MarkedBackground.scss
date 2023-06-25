@@ -1,33 +1,41 @@
+body{
+    background-color: black;
+}
 .fondoBanda {
-  background-image: url('../images/picPC.png');
+  position: relative;
+    background-image: url('../images/picPC.png');
   background-size: cover;
-  max-width: 1200px;
+  max-width: auto;
   height: 446px;
   margin-left: auto;
   margin-right: auto;
   @media (max-width: 767px) {
     background-image: url('../images/picTABLET.png');
     background-size: cover;
-    max-width: 768px;
+    max-width: 767px;
     height: 364px;
   }
   @media (max-width: 320px) {
     background-image: url('../images/picMOBILE.png');
     background-size: cover;
     max-width: 320px;
-    height: 364px;
+    height: 290px;
+    
   }
 }
 .fondoBlack {
-  background-color: rgb(6, 6, 6);
+  background-color: rgb(0, 0, 0);
   max-width: 1200px;
-  height: 1466px;
+  height: 1948px;
   margin-top: 0;
   margin-left: auto;
   margin-right: auto;
+
+  position: relative;
 }
 .logoEvento {
-  background-image: url(../images/logoEventPC.png);
+  position: absolute;
+    background-image: url(../images/logoEventPC.png);
   margin-left: 0;
   margin-top: 0;
   width: 229px;
@@ -44,6 +52,42 @@
   }
 }
 
+.title {
+    color: #dc56c5;
+    font-weight: 900;
+    font-size: 50;
+    padding-top: 0;
+    @media (max-width:767px) {
+        font-size: 30;
+    }
+    @media (max-width:320) {
+        font-size: 20;
+    }
+  }
+
+  .content-title{
+    display: flex;
+    align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 80px;
+    width: 608px;
+    height: 122px;
+    margin-left: auto;
+    margin-right: auto;
+    @media (max-width:767) {
+        width: 400px;
+        height: 74px;
+        padding-top: 60px;
+    }
+    @media (max-width:320) {
+        width: 280px;
+        height: 44px;
+        padding-top: 100px;
+    }
+    
+  }
+
 .item {
   position: absolute;
   @media (max-width: 767px) {
@@ -54,7 +98,8 @@
   top: 100px;
   right: 100px;
   @media (max-width: 767px) {
-    display: ruby;
+    display: block;
+    top: 500px;
   }
 }
 .D2 {
@@ -66,7 +111,7 @@
   left: 35px;
 }
 .D4 {
-  bottom: 0;
+  bottom: 250px;
   left: 100px;
 }
 .D5 {
@@ -94,6 +139,15 @@
   left: 0px;
 }
 .D11 {
-  top: 1230px;
+  bottom: 460px;
   right: 0;
+}
+.d12{
+    top: 200px;
+    right: 500px;
+}
+.D13{
+    top: 500px;
+    left: 100px;
+
 }
