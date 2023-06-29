@@ -2,10 +2,29 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+			integrity="sha512-n5sTMh6aKHZ7QnspOLK5kFgs3qZotFWS/6bs+Kf2C4IQHTZlHzNwTKhjFLWmFcA7pI4E2q6SGI+gJ+ZgzK5XBg=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,700;1,700&family=Montserrat:wght@300;400;700;900&display=swap"
+			rel="stylesheet"
+		/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Ticketmaster API Example</title>
 		<link rel="stylesheet" href="./style.css" />
+		<link rel="stylesheet" href="./modal.css" />
 	</head>
+
 	<body>
 		<div class="search-container">
 			<input type="text" id="search-input" placeholder="start searching" />
@@ -37,9 +56,21 @@
 			<button id="search-button"></button>
 		</div>
 		<div id="posters-container"></div>
-
+		<div id="modal-overlay">
+			<div id="modal-content">
+				<div id="modal-info">
+					<h2 id="modal-event-info"></h2>
+					<p id="modal-event-when"></p>
+					<p id="modal-event-where"></p>
+				</div>
+				<span id="modal-close">&times;</span>
+				<img id="modal-image" src="" alt="Event Image" />
+				<img id="modal-image-circular" src="" alt="Event Image" />
+			</div>
+		</div>
 		<div id="event-info"></div>
 		<div id="pagination"></div>
 		<script src="main.js" type="module"></script>
+		<script src="modal.js" type="module"></script>
 	</body>
 </html>

@@ -4,7 +4,7 @@ const eventInfoContainer = document.getElementById('event-info');
 const searchInput = document.getElementById('search-input');
 const countrySelect = document.getElementById('country-select');
 const searchButton = document.getElementById('search-button');
-const apiKey = 'wcLGT2sRwQVrfDayDn09Ko3s8PHbAXbT'; // Reemplaza esto con tu clave de API de Ticketmaster
+const apiKey = 'LIhcnyJs36Qars7XbSGaCVMB6e31wrqF'; // Reemplaza esto con tu clave de API de Ticketmaster
 
 const eventsPerPage = 16;
 let currentPage = 1;
@@ -107,6 +107,11 @@ function generatePosters(events) {
 		poster.addEventListener('click', () => {
 			showEventInfo(event.id);
 		});
+
+		poster.addEventListener('click', () => {
+			showEventInfo(event.id);
+			showModal(event);
+		});
 	});
 }
 
@@ -170,32 +175,6 @@ function createEllipsis() {
 	return ellipsis;
 }
 
-// Función para crear un enlace de página
-function createPageLink(pageNumber) {
-	const pageLink = document.createElement('a');
-	pageLink.href = '#';
-	pageLink.textContent = pageNumber;
-
-	if (pageNumber === currentPage) {
-		pageLink.classList.add('active');
-	}
-
-	pageLink.addEventListener('click', () => {
-		currentPage = pageNumber;
-		fetchAndRenderEvents();
-	});
-
-	return pageLink;
-}
-
-// Función para crear los puntos suspensivos
-function createEllipsis() {
-	const ellipsis = document.createElement('span');
-	ellipsis.textContent = '...';
-	ellipsis.classList.add('ellipsis');
-	return ellipsis;
-}
-
 // Función para mostrar información detallada del evento
 function showEventInfo(eventId) {
 	const url = `https://app.ticketmaster.com/discovery/v2/events/${eventId}.json?apikey=${apiKey}`;
@@ -205,20 +184,48 @@ function showEventInfo(eventId) {
 		.then(data => {
 			const event = data;
 
-			const eventInfo = document.createElement('div');
-			eventInfo.innerHTML = `
-        <h2>${event.name}</h2>
-        <p>Date: ${event.dates.start.localDate}</p>
-        <p>Time: ${event.dates.start.localTime}</p>
-        <p>Venue: ${event._embedded.venues[0].name}</p>
-        <p>Location: ${event._embedded.venues[0].location.address.line1}, ${event._embedded.venues[0].location.city.name}</p>
+			const modalOverlay = document.getElementById('modal-overlay');
+			const modalImage = document.getElementById('modal-image');
+			const modalImageCircular = document.getElementById(
+				'modal-image-circular'
+			);
+			const modalContent = document.getElementById('modal-content');
+
+			modalImage.src = event.images[0].url;
+			modalImage.alt = event.name;
+
+			modalOverlay.style.display = 'block';
+
+			const venue = event._embedded.venues[0];
+			const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${venue.location.latitude},${venue.location.longitude}`;
+
+			modalContent.innerHTML = `
+        <span id="modal-close">&times;</span>
+        <img id="modal-image-circular" src="${event.images[0].url}" alt="${event.name}" />
+        <div id= "modal-upper"><img id="modal-image" src="${event.images[0].url}" alt="${event.name}" />
+        <div id="modal-info">
+          <p class="subtitle-modal">Info:<span>${event.info}</span></p>
+          <p class="subtitle-modal"><i class="fas fa-map-marker-alt"></i>Where("Haz click"): <a href="${googleMapsLink}" target="_blank" class="location-link"><span class="location-text">${venue.name}</span></a></p>
+          <p class="subtitle-modal">When: <span>${event.dates.start.localDate}</span></p></div></div>
+          <div id="info-lower">
+          <p class="subtitle-modal">Who: <span>${event._embedded.attractions[0].name}</span></p>
+          <p class="subtitle-modal">Price: <span>${event.priceRanges[0].min} - ${event.priceRanges[0].max} ${event.priceRanges[0].currency}</span></p>
+          <button class="btn btn-blue" onclick="window.open('${event.url}', '_blank')">Buy Tickets</button></div>
+        <button class="btn btn-author" onclick="window.open('${event._embedded.attractions[0].url}', '_blank')">More about this author</button>
+          
       `;
-
 			eventInfoContainer.innerHTML = '';
-			eventInfoContainer.appendChild(eventInfo);
 		});
-}
 
+	// Agrega el siguiente bloque de código al final de la función showEventInfo
+	document.addEventListener('click', event => {
+		const modalOverlay = document.getElementById('modal-overlay');
+
+		if (event.target === modalOverlay) {
+			modalOverlay.style.display = 'none';
+		}
+	});
+}
 // Función para realizar la búsqueda de eventos
 function searchEvents() {
 	searchText = searchInput.value.trim();
