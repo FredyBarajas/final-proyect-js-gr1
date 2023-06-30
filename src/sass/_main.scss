@@ -267,4 +267,29 @@ body{
   line-height: 19.5px;
   text-align: center;
 
+
+@media (max-width: 767px) {
+	#modal-content {
+		width: 280px;
+		height: 952px;
+		display: flex;
+		flex-direction: column;
+	}
+	#modal-image {
+		display: none;
+	}
+	#modal-upper {
+		width: auto;
+		height: auto;
+		align-items: center;
+		justify-content: center;
+	}
+	#info-lower {
+		margin-left: 1px;
+	}
+	#modal-image-circular {
+		width: 102px;
+		height: 102px;
+	}
+
 }
