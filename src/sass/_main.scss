@@ -1,3 +1,4 @@
+
 body{
   background-color: black;
 }
@@ -26,9 +27,11 @@ body{
   justify-content: center;
   position: relative;
   z-index: 2;
+
 }
 
 .card {
+
   margin: 10px;
   padding: 10px;
   animation: cardEnter 0.5s ease forwards;
@@ -175,6 +178,7 @@ body{
   font-size: 16px;
   line-height: 19.5px;
   margin-top: 10px;
+
 }
 
 @media (min-width: 1280px) {
@@ -192,6 +196,7 @@ body{
 }
 
 @media (min-width: 768px) and (max-width: 1279px) {
+
   .cards {
     width: 768px;
   }
@@ -261,4 +266,5 @@ body{
   font-size: 16px;
   line-height: 19.5px;
   text-align: center;
+
 }
