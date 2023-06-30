@@ -12,14 +12,20 @@ body {
   background-color: black;
 }
 .search-container {
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  top: 300px;
   justify-content: center;
 }
 #search-input {
   background-color: gray;
   border-color: gray;
   margin-right: 45px;
-  border-radius: 5px;
+  border-radius: 20px;
   border: none;
+  height: 40px;
+  width: 500px;
 }
 ::placeholder {
   color: white;
@@ -28,7 +34,9 @@ body {
   color: white;
   border: none;
   background-color: gray;
-  border-radius: 5px;
+  border-radius: 20px;
+  height: 40px;
+  width: 500px;
 }
 
 #country-select:hover {
