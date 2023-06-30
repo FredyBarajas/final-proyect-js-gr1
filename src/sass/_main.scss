@@ -1,3 +1,4 @@
+
 body {
 	background-color: black;
 }
@@ -25,9 +26,21 @@ body {
 	justify-content: center;
 	position: relative;
 	z-index: 2;
+
+
+
 }
 
+p {
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+
+/* Estilos para la tarjeta de evento */
+
 .card {
+
 	margin: 10px;
 	padding: 10px;
 	animation: cardEnter 0.5s ease forwards;
@@ -188,19 +201,53 @@ body {
 		width: 267px;
 		height: 220px;
 	}
+
 }
 
+@media (min-width: 1280px) {
+	#posters-container {
+		width: 1280px;
+	}
+	.card {
+		width: 270px;
+		height: 320px;
+		position: relative;
+	}
+	.card img {
+		width: 255px;
+		height: 200px;
+		margin-top: 10px;
+		margin-left: 5px;
+	}
+	.event-info {
+		position: absolute;
+		bottom: -5px;
+		left: 0;
+		width: 100%;
+		padding: 10px;
+		color: white;
+	}
+	h3 {
+		font-size: 16px;
+		color: #dc56c5;
+	}
+}
 @media (min-width: 768px) and (max-width: 1279px) {
+
 	.cards {
 		width: 768px;
+
 	}
 	.card {
 		width: 152px;
 		height: 211px;
+
+
 	}
 	.card img {
 		width: 141px;
 		height: 120px;
+
 	}
 
 	.modal-content {
@@ -211,17 +258,21 @@ body {
 		width: 233px;
 		height: 416px;
 		margin-top: 160px;
+
 	}
 }
 
 @media (max-width: 767px) {
+
 	.mobile {
 		flex-direction: column;
 	}
+
 	.card {
 		width: 130px;
 		height: 208px;
 	}
+
 	.card img {
 		width: 120px;
 		height: 120px;
@@ -260,4 +311,5 @@ body {
 	font-size: 16px;
 	line-height: 19.5px;
 	text-align: center;
+
 }
