@@ -1,263 +1,180 @@
-const postersContainer = document.getElementById('posters-container');
-const paginationContainer = document.getElementById('pagination');
-const eventInfoContainer = document.getElementById('event-info');
-const searchInput = document.getElementById('search-input');
-const countrySelect = document.getElementById('country-select');
-const searchButton = document.getElementById('search-button');
-const apiKey = 'LIhcnyJs36Qars7XbSGaCVMB6e31wrqF'; // Reemplaza esto con tu clave de API de Ticketmaster
+const API_KEY = 'DCtz5bLd3cx4DdWQdcctzejbLGWIabei';
+const cardsContainer = document.querySelector('.cards');
+const modal = document.getElementById('modal');
+const modalPoster = document.querySelector('.modal-poster');
+const modalInfo = document.querySelector('.modal-info');
+const modalBuyTickets = document.querySelector('.modal-buy-tickets');
+const paginationContainer = document.querySelector('.pagination');
 
-const eventsPerPage = 16;
-let currentPage = 1;
-let totalEvents = 0;
-let totalPages = 0;
-let searchText = '';
-let selectedCountry = '';
-
-// Función para obtener la lista de países desde la API de Ticketmaster
-function fetchCountries() {
-	const url = `https://app.ticketmaster.com/discovery/v2/countries.json?apikey=${apiKey}`;
-
-	return fetch(url)
-		.then(response => response.json())
-		.then(data => data._embedded.countries);
-}
-
-// Función para generar las opciones del selector de países
-function generateCountryOptions(countries) {
-	countrySelect.innerHTML = '';
-
-	const allOption = document.createElement('option');
-	allOption.value = '';
-	allOption.textContent = 'Todos los países';
-	countrySelect.appendChild(allOption);
-
-	countries.forEach(country => {
-		const option = document.createElement('option');
-		option.value = country.countryCode;
-		option.textContent = country.name;
-		countrySelect.appendChild(option);
-	});
-}
-
-// Llamar a la función fetchCountries para obtener la lista de países
-fetchCountries()
-	.then(countries => generateCountryOptions(countries))
-	.catch(error => console.error(error));
+// Configuración de la paginación
+const eventosPorPagina = 16;
+let paginaActual = 1;
 
 // Función para obtener eventos de la API de Ticketmaster
-function fetchEvents(page) {
-	let url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiKey}&size=${eventsPerPage}&page=${page}`;
+async function obtenerEventos() {
+  const url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${API_KEY}&size=${eventosPorPagina}&page=${paginaActual}`;
 
-	if (searchText !== '') {
-		url += `&keyword=${encodeURIComponent(searchText)}`;
-	}
+  try {
+    const respuesta = await fetch(url);
+    const datos = await respuesta.json();
 
-	if (selectedCountry !== '') {
-		url += `&countryCode=${selectedCountry}`;
-	}
-
-	return fetch(url)
-		.then(response => response.json())
-		.then(data => {
-			const events = data._embedded.events;
-			totalEvents = data.page.totalElements;
-			totalPages = data.page.totalPages;
-
-			return events;
-		});
+    const eventos = datos._embedded.events;
+    generarTarjetas(eventos);
+    generarPaginacion(eventos);
+  } catch (error) {
+    console.log('Error al obtener eventos:', error);
+  }
 }
 
-// Función para generar el HTML de los pósters de los eventos
-function generatePosters(events) {
-	postersContainer.innerHTML = '';
+// Función para generar las tarjetas de eventos
+function generarTarjetas(eventos) {
+  cardsContainer.innerHTML = '';
 
-	events.forEach(event => {
-		const poster = document.createElement('div');
-		poster.className = 'poster';
+  //animar tarjetas al dar enter
 
-		const card = document.createElement('div');
-		card.className = 'card';
+  eventos.forEach(evento => {
+    const card = document.createElement('div');
+    card.classList.add('card', 'animate-enter');
 
-		const image = document.createElement('img');
-		image.src = event.images[0].url;
-		image.alt = event.name;
-		card.appendChild(image);
+    const poster = document.createElement('img');
+    poster.src = evento.images[0].url;
+    card.appendChild(poster);
 
-		const eventInfo = document.createElement('div');
-		eventInfo.className = 'event-info';
+    const nombre = document.createElement('div');
+    nombre.textContent = evento.name;
+    card.appendChild(nombre);
+    nombre.style.color = '#DC56C5';
+    nombre.style.fontFamily = 'Montserrat';
+    nombre.style.fontWeight = '700';
+    nombre.style.lineHeight = '19.5px';
+    nombre.style.textAlign = 'center';
+    if (window.innerWidth <= 768) {
+      nombre.style.fontSize = '14px';
+    } else {
+      nombre.style.fontSize = '16px';
+    }
+    const fecha = document.createElement('div');
+    fecha.textContent = evento.dates.start.localDate;
+    card.appendChild(fecha);
+    fecha.style.color = '#FFFFFF';
+    fecha.style.fontFamily = 'Montserrat';
+    fecha.style.fontWeight = '400';
+    fecha.style.fontSize = '16px';
+    fecha.style.lineHeight = '19.5px';
+    fecha.style.textAlign = 'center';
 
-		const eventName = document.createElement('h3');
-		eventName.textContent = event.name;
-		eventInfo.appendChild(eventName);
+    const lugar = document.createElement('div');
+    lugar.textContent = evento._embedded.venues[0].name;
+    card.appendChild(lugar);
+    lugar.style.fontFamily = 'Montserrat';
+    lugar.style.fontWeight = '600';
+    lugar.style.color = '#FFFFFF';
+    lugar.style.fontSize = '16px';
+    lugar.style.lineHeight = '17.07px';
+    lugar.style.textAlign = 'center';
 
-		const eventDate = document.createElement('p');
-		eventDate.innerHTML = `<i class="fa fa-calendar"></i> Fecha: ${event.dates.start.localDate}`;
-		eventInfo.appendChild(eventDate);
+    card.addEventListener('click', () => {
+      mostrarModal(evento);
+    });
 
-		const eventLocation = document.createElement('p');
-		eventLocation.innerHTML = `<i class="fa fa-map-marker"></i> Ubicación: ${event._embedded.venues[0].name}`;
-		eventInfo.appendChild(eventLocation);
-
-		card.appendChild(eventInfo);
-		poster.appendChild(card);
-
-		postersContainer.appendChild(poster);
-
-		// Agregar evento de clic para mostrar información del evento
-		poster.addEventListener('click', () => {
-			showEventInfo(event.id);
-		});
-
-		poster.addEventListener('click', () => {
-			showEventInfo(event.id);
-			showModal(event);
-		});
-	});
+    cardsContainer.appendChild(card);
+  });
 }
 
-// Función para generar la paginación
+// Función para generar los enlaces de paginación
+function generarPaginacion(eventos) {
+  paginationContainer.innerHTML = '';
 
-function generatePagination() {
-	paginationContainer.innerHTML = '';
+  const totalPaginas = Math.ceil(eventos.length / eventosPorPagina);
 
-	// Calcular el rango de páginas que se mostrarán
-	let startPage = Math.max(2, currentPage - 2);
-	let endPage = Math.min(totalPages, currentPage + 9);
+  for (let i = 1; i <= totalPaginas; i++) {
+    const enlace = document.createElement('a');
+    enlace.href = '#';
+    enlace.textContent = i;
 
-	// Mostrar el enlace a la primera página
-	const firstPageLink = createPageLink(1);
-	paginationContainer.appendChild(firstPageLink);
+    if (i === paginaActual) {
+      enlace.classList.add('active');
+    }
 
-	// Mostrar los puntos suspensivos si hay más de 3 páginas
-	if (startPage > 2) {
-		paginationContainer.appendChild(createEllipsis());
-	}
+    enlace.addEventListener('click', () => {
+      paginaActual = i;
+      obtenerEventos();
+      window.scrollTo(0, 0);
 
-	// Generar los enlaces de las páginas
-	for (let i = startPage; i <= endPage; i++) {
-		const pageLink = createPageLink(i);
-		paginationContainer.appendChild(pageLink);
-	}
+      // Reiniciar la animación y la transición después de un pequeño retraso
+      setTimeout(() => {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+          card.classList.remove('animate-enter');
+          void card.offsetWidth; // Reiniciar la animación
+          card.classList.add('animate-enter');
+        });
+      }, 500);
+    });
 
-	// Mostrar los puntos suspensivos si hay más páginas después de la página actual
-	if (endPage < totalPages - 1) {
-		paginationContainer.appendChild(createEllipsis());
-	}
-
-	// Mostrar el enlace a la última página
-	const lastPageLink = createPageLink(totalPages);
-	paginationContainer.appendChild(lastPageLink);
+    paginationContainer.appendChild(enlace);
+  }
 }
 
-// Función para crear un enlace de página
-function createPageLink(pageNumber) {
-	const pageLink = document.createElement('a');
-	pageLink.href = '#';
-	pageLink.textContent = pageNumber;
+// Función para mostrar el modal con más detalles del evento
+function mostrarModal(evento) {
+  modalPoster.src = evento.images[0].url;
 
-	if (pageNumber === currentPage) {
-		pageLink.classList.add('active');
-	}
+  modalInfo.innerHTML = `
+    <div><strong style="font-family: Montserrat; font-weight: 600; font-size: 24px; line-height: 29.26px; color: #DC56C5;">Info</strong> <span style="display: block; font-family: Montserrat; font-weight: 400; font-size: 18px; line-height: 21.94px;color: #0E0E0E;">${evento.info}</span></div>
+    <div><strong style="font-family: Montserrat; font-weight: 600; font-size: 24px; line-height: 29.26px; color: #DC56C5;">When</strong> <span style="display: block; font-family: Montserrat; font-weight: 400; font-size: 18px; line-height: 21.94px;color: #0E0E0E;"> ${evento.dates.start.localDate}</span></div>
+    <div><strong style="font-family: Montserrat; font-weight: 600; font-size: 24px; line-height: 29.26px; color: #DC56C5;">Where</strong> <span style="display: block; font-family: Montserrat; font-weight: 400; font-size: 18px; line-height: 21.94px;color: #0E0E0E;"> ${evento._embedded.venues[0].name}</span></div>
+    <div><strong style="font-family: Montserrat; font-weight: 600; font-size: 24px; line-height: 29.26px; color: #DC56C5;">Who</strong> <span style="display: block; font-family: Montserrat; font-weight: 400; font-size: 18px; line-height: 21.94px;color: #0E0E0E;"> ${evento._embedded.attractions[0].name}</span></div>
+    <div><strong style="font-family: Montserrat; font-weight: 600; font-size: 24px; line-height: 29.26px; color: #DC56C5;">Price</strong> <span style="display: block; font-family: Montserrat; font-weight: 400; font-size: 18px; line-height: 21.94px;color: #0E0E0E;"> ${evento.priceRanges[0].min} - ${evento.priceRanges[0].max} ${evento.priceRanges[0].currency}</span></div>
+  `;
 
-	pageLink.addEventListener('click', () => {
-		currentPage = pageNumber;
-		fetchAndRenderEvents();
-	});
+  modalBuyTickets.innerHTML = `<a href="${evento.url}" target="_blank" style="font-family: Montserrat; font-weight: 500; font-size: 16px; line-height: 19.5px; color: #FFFFFF; text-decoration: none; width: 145px; height: 40px;  border-radius: 5px; background-color: #4C00FE; ">Buy Tickets</a>`;
 
-	return pageLink;
+  modal.style.display = 'block';
+
+  const closeButton = document.querySelector('.close');
+  closeButton.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  //funcion para cerrar el modal al dar click en la parte oscura de la pagina
+
+  modal.addEventListener('click', event => {
+    if (event.target === modal) {
+      modal.style.display = 'none';
+    }
+  });
+
+  //codigo para solicitar mas informacion del artista
+
+  const moreInfoButton = document.querySelector('.more_info');
+  moreInfoButton.addEventListener('click', () => {
+    const authorUrl = evento._embedded.attractions[0].url;
+    window.location.href = authorUrl;
+  });
 }
 
-// Función para crear los puntos suspensivos
-function createEllipsis() {
-	const ellipsis = document.createElement('span');
-	ellipsis.textContent = '...';
-	ellipsis.classList.add('ellipsis');
-	return ellipsis;
-}
+// Iniciar la obtención de eventos al cargar la página
+obtenerEventos();
 
-// Función para mostrar información detallada del evento
-function showEventInfo(eventId) {
-	const url = `https://app.ticketmaster.com/discovery/v2/events/${eventId}.json?apikey=${apiKey}`;
+const lugar = document.createElement('div');
+lugar.classList.add('location');
 
-	fetch(url)
-		.then(response => response.json())
-		.then(data => {
-			const event = data;
+const icono = document.createElement('i');
+icono.classList.add('fas', 'fa-map-marker');
+lugar.appendChild(icono);
 
-			const modalOverlay = document.getElementById('modal-overlay');
-			const modalImage = document.getElementById('modal-image');
-			const modalImageCircular = document.getElementById(
-				'modal-image-circular'
-			);
-			const modalContent = document.getElementById('modal-content');
+const lugarTexto = document.createElement('div');
+lugarTexto.classList.add('location-text');
+lugarTexto.textContent = evento._embedded.venues[0].name;
+lugar.appendChild(lugarTexto);
 
-			modalImage.src = event.images[0].url;
-			modalImage.alt = event.name;
+card.appendChild(lugar);
 
-			modalOverlay.style.display = 'block';
+// Dentro de la función mostrarModal(evento) donde se encuentra el botón "More from this author"
+const moreInfoButton = document.querySelector('.more_info');
 
-			const venue = event._embedded.venues[0];
-			const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${venue.location.latitude},${venue.location.longitude}`;
-
-			modalContent.innerHTML = `
-        <span id="modal-close">&times;</span>
-        <img id="modal-image-circular" src="${event.images[0].url}" alt="${event.name}" />
-        <div id= "modal-upper"><img id="modal-image" src="${event.images[0].url}" alt="${event.name}" />
-        <div id="modal-info">
-          <p class="subtitle-modal">Info:<span>${event.info}</span></p>
-          <p class="subtitle-modal"><i class="fas fa-map-marker-alt"></i>Where("Haz click"): <a href="${googleMapsLink}" target="_blank" class="location-link"><span class="location-text">${venue.name}</span></a></p>
-          <p class="subtitle-modal">When: <span>${event.dates.start.localDate}</span></p></div></div>
-          <div id="info-lower">
-          <p class="subtitle-modal">Who: <span>${event._embedded.attractions[0].name}</span></p>
-          <p class="subtitle-modal">Price: <span>${event.priceRanges[0].min} - ${event.priceRanges[0].max} ${event.priceRanges[0].currency}</span></p>
-          <button class="btn btn-blue" onclick="window.open('${event.url}', '_blank')">Buy Tickets</button></div>
-        <button class="btn btn-author" onclick="window.open('${event._embedded.attractions[0].url}', '_blank')">More about this author</button>
-          
-      `;
-			eventInfoContainer.innerHTML = '';
-		});
-
-	// Agrega el siguiente bloque de código al final de la función showEventInfo
-	document.addEventListener('click', event => {
-		const modalOverlay = document.getElementById('modal-overlay');
-
-		if (event.target === modalOverlay) {
-			modalOverlay.style.display = 'none';
-		}
-	});
-}
-// Función para realizar la búsqueda de eventos
-function searchEvents() {
-	searchText = searchInput.value.trim();
-	currentPage = 1;
-	fetchAndRenderEvents();
-}
-
-// Función para cambiar el país seleccionado
-function changeCountry() {
-	selectedCountry = countrySelect.value;
-	currentPage = 1;
-	fetchAndRenderEvents();
-}
-
-// Función para realizar la solicitud a la API y mostrar los eventos
-function fetchAndRenderEvents() {
-	fetchEvents(currentPage).then(events => {
-		generatePosters(events);
-		generatePagination();
-	});
-}
-
-// Agregar eventos a los elementos de búsqueda y selector de país
-searchButton.addEventListener('click', searchEvents);
-searchInput.addEventListener('keydown', event => {
-	if (event.keyCode === 13) {
-		searchEvents();
-	}
+moreInfoButton.addEventListener('click', () => {
+  const authorUrl = evento._embedded.attractions[0].url;
+  window.location.href = authorUrl;
 });
-countrySelect.addEventListener('change', changeCountry);
-
-// Llamar a la función fetchAndRenderEvents para obtener y mostrar los eventos
-fetchAndRenderEvents();
-// Obtén las tarjetas de eventos
-const posters = document.getElementsByClassName('poster');

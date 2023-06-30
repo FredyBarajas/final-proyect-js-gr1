@@ -1,76 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-		/>
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-			integrity="sha512-n5sTMh6aKHZ7QnspOLK5kFgs3qZotFWS/6bs+Kf2C4IQHTZlHzNwTKhjFLWmFcA7pI4E2q6SGI+gJ+ZgzK5XBg=="
-			crossorigin="anonymous"
-			referrerpolicy="no-referrer"
-		/>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,700;1,700&family=Montserrat:wght@300;400;700;900&display=swap"
-			rel="stylesheet"
-		/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Ticketmaster API Example</title>
-		<link rel="stylesheet" href="./style.css" />
-		<link rel="stylesheet" href="./modal.css" />
-	</head>
+<html>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,700;1,700&display=swap"
+    rel="stylesheet"
+  />
+  <head>
+    <title>Eventos de Ticketmaster</title>
+    <link rel="stylesheet" type="text/css" href="/src/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="cards"></div>
+    </div>
 
-	<body>
-		<div class="search-container">
-			<input type="text" id="search-input" placeholder="start searching" />
-			<select id="country-select">
-				<option class="select_country" value="" disabled selected>
-					Choose country
-				</option>
-				<option value="">Todos los países</option>
-				<option value="DE">Alemania</option>
-				<option value="AU">Australia</option>
-				<option value="BR">Brasil</option>
-				<option value="CA">Canadá</option>
-				<option value="CL">Chile</option>
-				<option value="DK">Dinamarca</option>
-				<option value="ES">España</option>
-				<option value="US">Estados Unidos</option>
-				<option value="FI">Finlandia</option>
-				<option value="NL">Holanda</option>
-				<option value="GB">Inglaterra</option>
-				<option value="IE">Irlanda</option>
-				<option value="MX">México</option>
-				<option value="NZ">Nueva Zelanda</option>
-				<option value="NO">Noruega</option>
-				<option value="SE">Suecia</option>
-				<option value="TR">Turquía</option>
-				<option value="GB">Reino Unido</option>
-				<!-- Agrega más opciones de países según tus necesidades de acuerdo a api -->
-			</select>
-			<button id="search-button"></button>
-		</div>
-		<div id="posters-container"></div>
-		<div id="modal-overlay">
-			<div id="modal-content">
-				<div id="modal-info">
-					<h2 id="modal-event-info"></h2>
-					<p id="modal-event-when"></p>
-					<p id="modal-event-where"></p>
-				</div>
-				<span id="modal-close">&times;</span>
-				<img id="modal-image" src="" alt="Event Image" />
-				<img id="modal-image-circular" src="" alt="Event Image" />
-			</div>
-		</div>
-		<div id="event-info"></div>
-		<div id="pagination"></div>
-		<script src="main.js" type="module"></script>
-		<script src="modal.js" type="module"></script>
-	</body>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="mobile">
+          <div class="modal-details">
+            <img class="modal-poster" />
+            <div class="modal-container">
+              <div class="modal-info"></div>
+              <div class="modal-buy-tickets"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-more-info">
+          <a class="more_info" href="#">More from this author</a>
+        </div>
+      </div>
+    </div>
+    <div class="pagination"></div>
+    <script src="./main.js"></script>
+  </body>
 </html>
