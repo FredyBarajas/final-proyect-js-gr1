@@ -3,9 +3,9 @@ body{
 }
 .fondoBanda {
   position: relative;
-  background-image: url('../images/picPC.png');
+    background-image: url('../images/picPC.png');
   background-size: cover;
-  max-width: 1200px;
+  max-width: auto;
   height: 446px;
   margin-left: auto;
   margin-right: auto;
@@ -52,76 +52,11 @@ body{
   }
 }
 
-.parpadea {
-
-  animation-name: parpadeo;
-  animation-duration: 1s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-
-  -webkit-animation-name:parpadeo;
-  -webkit-animation-duration: 1s;
-  -webkit-animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-}
-
-@-moz-keyframes parpadeo{
-  0% { text-shadow:        
-    0 0 5px #dc56c5,
-   0 0 10px #dc56c5;}
-  20% { text-shadow: none;
-        color: #dc56c5;}
-  100% { text-shadow:        
-     0 0 5px #dc56c5,
-    0 0 10px #dc56c5,
-    0 0 20px #dc56c5,
-    0 0 40px  #dc56c5; }
-}
-
-@-webkit-keyframes parpadeo {
-  0% { text-shadow:        
-    0 0 5px #dc56c5,
-   0 0 10px #dc56c5;}
-  20% { text-shadow: none;
-        color: #dc56c5;}
-  100% { text-shadow:        
-     0 0 5px #dc56c5,
-    0 0 10px #dc56c5,
-    0 0 20px #dc56c5,
-    0 0 40px  #dc56c5; }
-}
-
-@keyframes parpadeo {
-  0% { text-shadow:        
-    0 0 5px #dc56c5,
-   0 0 10px #dc56c5,
-   0 0 20px #dc56c5,
-   0 0 40px  #dc56c5;}
-  20% { text-shadow: none;
-          color: #dc56c5;}
-  100% { text-shadow:        
-     0 0 5px #dc56c5,
-    0 0 10px #dc56c5,
-    0 0 20px #dc56c5,
-    0 0 40px  #dc56c5; }
-}
-
 .title {
-    color: #ffff;
+    color: #dc56c5;
     font-weight: 900;
     font-size: 50;
     padding-top: 0;
-    text-shadow:
-        0 0 5px #dc56c5,
-        0 0 10px #dc56c5,
-        0 0 20px #dc56c5,
-        0 0 40px  #dc56c5;
-        // 0 0 80px  #dc56c5;
-        // 0 0 90px  #d89bce,
-        // 0 0 100px #d89bce;
-        // 0 0 140px #dc56c5,
-        // 0 0 180px #dc56c5;
-    
     @media (max-width:767px) {
         font-size: 30;
     }
@@ -133,9 +68,9 @@ body{
   .content-title{
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding-top: 80px;
+  justify-content: center;
+  text-align: center;
+  padding-top: 80px;
     width: 608px;
     height: 122px;
     margin-left: auto;
