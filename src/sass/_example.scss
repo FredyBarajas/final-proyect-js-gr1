@@ -26,3 +26,17 @@
   background-size: cover;
   background-position: center;
 }
+.simple-lightbox-overlay {
+  z-index: 9999;
+}
+
+.simple-lightbox-overlay.simple-lightbox-overlay--visible {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.simple-lightbox-image {
+  position: relative !important;
+  z-index: 10000;
+}
