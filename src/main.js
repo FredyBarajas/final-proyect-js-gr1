@@ -13,6 +13,11 @@ let totalPages = 0;
 let searchText = '';
 let selectedCountry = '';
 
+const closeButton = document.querySelector('#modal-close');
+    closeButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
 // Función para obtener la lista de países desde la API de Ticketmaster
 function fetchCountries() {
   const url = `https://app.ticketmaster.com/discovery/v2/countries.json?apikey=${apiKey}`;
@@ -220,7 +225,10 @@ function showEventInfo(eventId) {
   // Agrega el siguiente bloque de código al final de la función showEventInfo
   document.addEventListener('click', event => {
     const modalOverlay = document.getElementById('modal-overlay');
-
+    const closeButton = document.querySelector('#modal-close');
+    closeButton.addEventListener('click', () => {
+        modalOverlay.style.display = 'none';
+    });
     if (event.target === modalOverlay) {
       modalOverlay.style.display = 'none';
     }

@@ -162,8 +162,10 @@ p {
 #pagination {
 	justify-content: center;
 	align-items: center;
-	display: flex;
+	position: absolute;
 	background-color: black;
+  left: 34%;
+  margin-top: 50px;
 }
 a {
 	margin-top: 40px;
